@@ -49,6 +49,8 @@ underscores replaced by dashes.
 All arguments passed to the method call get passed on to the system
 command as arguments.
 
+### Flags
+
 To pass flags, pass them as key-value pairs as first arguemnt:
 
     # apt-get -y upgrade
@@ -57,12 +59,15 @@ To pass flags, pass them as key-value pairs as first arguemnt:
     # rm -r -f /some/dir
     cmd::rm(array('r' => true, 'f' => true), "/some/dir");
 
-    cmd::git(array("branch" => "some_branch"), "clone", "git://github.com/CHH/Commander");
-
 You can pass flags as part of the argument list too:
 
+    # git clone --branch development git://github.com/CHH/Commander
+    cmd::git("clone", "--branch", "development", "git://github.com/CHH/Commander");
+    
     # rm -rf /some/dir
     cmd::rm("-rf", "/some/dir");
+
+### Weird Names or absolute paths
 
 To call commands with their absolute path, or commands which contain
 some really weird characters retrieve a command instance with the
@@ -70,6 +75,17 @@ some really weird characters retrieve a command instance with the
 
     $ffmpeg = cmd::command("/usr/local/custom-ffmpeg/bin/ffmpeg");
     $ffmpeg($movieFile);
+
+### Piping
+
+Piping is done by function composition:
+
+    # Removes all "require_once" occurences and comments them out.
+    cmd::xargs(
+        cmd::find($sourceDir, "-print0", "-name", "*.php"), 
+        "-0",
+        "sed", "-E", "-i", "-e", 's/^(require_once)/\/\/ \1/g'
+    );
 
 ## License
 
