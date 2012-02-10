@@ -13,12 +13,22 @@ class Command
         $this->executable = $executable;
     }
 
-    function __invoke()
+    function execute($argv = array())
     {
-        $argv = func_get_args();
-
         $builder = new ProcessBuilder;
         $builder->add($this->executable);
+
+        if (is_array(@$argv[0])) {
+            $flags = array_shift($argv);
+
+            foreach ($flags as $flag => $value) {
+                $builder->add(
+                    (strlen($flag) > 1 ? "--" : "-") . $flag
+                );
+
+                $value === true or $builder->add($value);
+            }
+        }
 
         foreach ($argv as $a) {
             $builder->add($a);
@@ -33,5 +43,10 @@ class Command
         }
 
         return $process->getOutput();
+    }
+
+    function __invoke()
+    {
+        return $this->execute(func_get_args());
     }
 }

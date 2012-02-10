@@ -33,9 +33,15 @@ class CommanderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("foo bar baz\n", $args);
     }
 
-    function testPassesOptionsAsFlags()
+    function testFlagsPassedAsArray()
     {
         $args = cmd::echo_args(array('foo' => 'bar', 'f' => true));
         $this->assertEquals("--foo bar -f\n", $args);
+    }
+
+    function testFlagsPassedAsArgument()
+    {
+        $args = cmd::echo_args("-rf", "-a");
+        $this->assertEquals("-rf -a\n", $args);
     }
 }

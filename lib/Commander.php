@@ -58,6 +58,6 @@ class Commander
         }
 
         $cmd = static::command($path);
-        return call_user_func_array($cmd, $argv);
+        return $cmd->execute($argv);
     }
 }
