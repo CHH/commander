@@ -17,7 +17,7 @@ class CommanderTest extends \PHPUnit_Framework_TestCase
 
     function testReturnsStdOut()
     {
-        $stdout = cmd::ls();
+        $stdout = (string) cmd::ls();
         $this->assertFalse(empty($stdout));
     }
 
@@ -30,18 +30,25 @@ class CommanderTest extends \PHPUnit_Framework_TestCase
     function testPassesFunctionArgumentsAsCommandArguments()
     {
         $args = cmd::echo_args("foo", "bar", "baz");
-        $this->assertEquals("foo bar baz\n", $args);
+        $this->assertEquals("foo bar baz\n", (string) $args);
     }
 
     function testFlagsPassedAsArray()
     {
         $args = cmd::echo_args(array('foo' => 'bar', 'f' => true));
-        $this->assertEquals("--foo bar -f\n", $args);
+        $this->assertEquals("--foo bar -f\n", (string) $args);
     }
 
     function testFlagsPassedAsArgument()
     {
         $args = cmd::echo_args("-rf", "-a");
-        $this->assertEquals("-rf -a\n", $args);
+        $this->assertEquals("-rf -a\n", (string) $args);
+    }
+
+    function testPiping()
+    {
+        $res = cmd::wc(cmd::echo_args("foo"), "-c");
+
+        $this->assertEquals("4", trim((string) $res));
     }
 }
