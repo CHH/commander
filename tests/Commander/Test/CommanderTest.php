@@ -2,7 +2,8 @@
 
 namespace Commander\Test;
 
-use Commander as cmd;
+use Commander as cmd,
+    Commander\ErrorException;
 
 class CommanderTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,5 +51,34 @@ class CommanderTest extends \PHPUnit_Framework_TestCase
         $res = cmd::wc(cmd::echo_args("foo"), "-c");
 
         $this->assertEquals("4", trim((string) $res));
+    }
+
+    function testCommandThrowsErrorExceptionWhenCommandExitsWithError()
+    {
+        $false = cmd::command(cmd::which('false'));
+
+        try {
+            $false();
+
+        } catch (ErrorException $e) {
+            $this->assertEquals(1, $e->getCode());
+            return;
+        }
+
+        $this->fail("Expected Exception Commander\ErrorException");
+    }
+
+    function testErrorExceptionHasErrorOutput()
+    {
+        try {
+            cmd::ls('--foo');
+
+        } catch (ErrorException $e) {
+            $this->assertEquals(1, $e->getCode());
+            $this->assertNotEmpty($e->getErrorOutput());
+            return;
+        }
+
+        $this->fail("Expected Exception Commander\ErrorException");
     }
 }

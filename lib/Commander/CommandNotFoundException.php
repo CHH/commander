@@ -2,5 +2,5 @@
 
 namespace Commander;
 
-class CommandNotFoundException extends \Exception
+class CommandNotFoundException extends Exception
 {}

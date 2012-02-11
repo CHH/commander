@@ -77,7 +77,11 @@ class Command
 
         if (!$process->isSuccessful()) {
             $status = $process->getExitCode();
-            throw new Exception("Command failed with status [$status].", $status);
+            $commandLine = $process->getCommandLine();
+            throw new ErrorException(
+                "Command [$commandLine] failed with status [$status].", 
+                $status, $process->getErrorOutput()
+            );
         }
 
         return new Response($process->getOutput(), $process->getErrorOutput());

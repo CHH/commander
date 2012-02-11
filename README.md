@@ -33,7 +33,6 @@ Commander makes system commands available as static methods of the
 looks up the method name in your `PATH` environment variable:
 
     <?php
-    
     use Commander as cmd;
 
     echo cmd::ifconfig();
@@ -86,6 +85,13 @@ Piping is done by function composition:
         "-0",
         "sed", "-E", "-i", "-e", 's/^(require_once)/\/\/ \1/g'
     );
+
+### Errors
+
+When a command exits with an exit status greater than Zero, then
+an `Commander\ErrorException` is thrown. This exception has the code
+set to the command's exit status and has a `getErrorOutput()` method
+which returns everything the command wrote to `STDERR`.
 
 ## License
 
