@@ -38,8 +38,8 @@ looks up the method name in your `PATH` environment variable:
     echo cmd::ifconfig();
 
 To call commands with dashes in their name, just substitute the dashes
-with underscores when calling the method. To call `apt-get` command you would
-then call the `apt_get` method. Commander looks first for `apt_get` and
+with underscores when calling the method. To call `apt-get` you would
+call the `apt_get` method. Commander looks first for `apt_get` and
 then when it does not find this command, then it looks again with the
 underscores replaced by dashes.
 
