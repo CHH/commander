@@ -1,6 +1,6 @@
 {
     "name": "chh/commander",
-    "description": "Simple Command Wrapper which makes system commands available as static methods",
+    "description": "Makes calling system commands quick and easy.",
     "type": "library",
     "license": "MIT",
     "authors": [

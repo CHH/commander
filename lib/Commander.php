@@ -23,6 +23,11 @@ class Commander
         return $finder->find($cmd);
     }
 
+    # Returns an argument from the argument list.
+    #
+    # index - Index of the argument.
+    #
+    # Returns the argument at the given index.
     static function arg($index)
     {
         if (array_key_exists($index, $_SERVER['argv'])) {
@@ -41,6 +46,14 @@ class Commander
         return new Command($path);
     }
 
+    # Resolves the called static method's name to a command name
+    # and calls it with the arguments passed to the method.
+    #
+    # cmd  - Name of the called method.
+    # argv - Arguments passed to the method call.
+    #
+    # Returns a Commander\Response object containing the buffered
+    # error output and standard output.
     static function __callStatic($cmd, $argv)
     {
         $path = static::which($cmd);
@@ -54,7 +67,7 @@ class Commander
         }
 
         if (!$path) {
-            throw new \UnexpectedValueException("Command not found.");
+            throw new \UnexpectedValueException("Command '$cmd' not found.");
         }
 
         $cmd = static::command($path);

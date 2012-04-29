@@ -4,33 +4,6 @@ namespace Commander;
 
 use Symfony\Component\Process\ProcessBuilder;
 
-class Response
-{
-    protected $output = "";
-    protected $error  = "";
-
-    function __construct($output, $error)
-    {
-        $this->output = $output;
-        $this->error = $error;
-    }
-
-    function getOutput()
-    {
-        return $this->output;
-    }
-
-    function getError()
-    {
-        return $this->error;
-    }
-
-    function __toString()
-    {
-        return $this->output;
-    }
-}
-
 class Command
 {
     protected $executable;
@@ -53,7 +26,7 @@ class Command
         $builder = new ProcessBuilder;
         $builder->add($this->executable);
 
-        if (is_callable(array(@$argv[0], "getOutput"))) {
+        if (@$argv[0] instanceof Response) {
             $builder->setInput(array_shift($argv)->getOutput());
 
         } else if (is_array(@$argv[0])) {
@@ -78,6 +51,7 @@ class Command
         if (!$process->isSuccessful()) {
             $status = $process->getExitCode();
             $commandLine = $process->getCommandLine();
+
             throw new ErrorException(
                 "Command [$commandLine] failed with status [$status].", 
                 $status, $process->getErrorOutput()
