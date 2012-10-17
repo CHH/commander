@@ -12,7 +12,7 @@ available as static methods.
 
     {
         "require": {
-            "chh/commander": "*"
+            "chh/commander": "*@dev"
         }
     }
 
@@ -24,7 +24,7 @@ available as static methods.
 
 3\. Put this in your code:
 
-    require "vendor/.composer/autoload.php";
+    require "vendor/autoload.php";
 
 ## Usage
 
